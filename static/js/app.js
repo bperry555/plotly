@@ -11,7 +11,7 @@ function init() {
 
         //  ** Display "Default" Demographic Information **
         Object.entries(filteredDemographics[0]).forEach(([key, value]) => {
-            d3.select('#sample-metadata').append('p').text(`${key},${value}`);
+            d3.select('#sample-metadata').append('p').text(`${key}: ${value}`);
         });
         
     
@@ -34,6 +34,22 @@ function init() {
         let barData = [barTrace];
 
         Plotly.newPlot('bar', barData, barlayout);
+
+    
+        let bubTrace = {
+            x: filteredSamples[0].otu_ids,
+            y: filteredSamples[0].sample_values,
+            mode: 'markers',
+            text: filteredSamples[0].otu_labels,
+            marker: {
+                size: filteredSamples[0].sample_values,
+                color: filteredSamples[0].otu_ids
+            }
+        }    
+    
+        let bubData = [bubTrace];
+
+        Plotly.newPlot('bubble', bubData)
     });
 };
 init();
@@ -66,7 +82,7 @@ function filterData(idSelected) {
         updateDemographic(filteredDemographics);
         updateBar(sampleValues, otuIds, otuLabels);
         updateBubble(sampleValuesAll);
-        buildGauge(filteredDemographics);    
+        // buildGauge(filteredDemographics);    
     });
 };
 
@@ -76,7 +92,7 @@ function updateDemographic(demo) {
 
     // Add Object values into the HTML
     Object.entries(demo[0]).forEach(([key, value]) => {
-        d3.select('#sample-metadata').append('p').text(`${key},${value}`);
+        d3.select('#sample-metadata').append('p').text(`${key}: ${value}`);
     });
 
 };
